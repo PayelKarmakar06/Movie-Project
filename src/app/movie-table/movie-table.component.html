@@ -1,1 +1,45 @@
-<p>movie-table works!</p>
+<div style="text-align:center">
+    <h2>The all time favourite Movies</h2>
+</div>
+
+<div>
+    <div class="row search-block">
+        <div class="col-md-4 col-sm-4 col-xl-4">
+            <input type="text" placeholder="Search.." name="search" class="form-control" type="text"
+                (search)="getItems(searchedText, false)" (change)="onChangeSearch(searchedText, false)">
+        </div>
+        <div class="col-md-3 col-sm-3 col-xl-2">
+            <button type="button" class="btn" (click)="getItems(searchedText, false)" class="btn-search"
+                [disabled]="!searchedText || searchedText.length <3">Search</button>
+        </div>
+    </div>
+    <div class="row"></div>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Categoty/ Genre</th>
+                <th>Year</th>
+                <th>Rating</th>
+                <th>Runtime</th>
+                <th>Go to IMDB</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let movie of movieTableData | paginate: {itemsPerPage: 10, currentPage: curPage,totalItems: 500}">
+                <td>{{movie.primaryTitle}}</td>
+                <td>{{movie.genres}}</td>
+                <td>{{movie.startYear}}</td>
+                <td>{{movie.averageRating}}</td>
+                <td>{{movie.runtimeMinutes}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row" *ngIf="movieTableData && movieTableData.length > 0">
+        <div class="col">
+            <pagination-controls previousLabel="Prev" nextLabel="Next" (click)="pageChanged(curPage)" (pageChange)="curPage = $event"></pagination-controls>
+        </div>
+    </div>
+</div>
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="pacman"></ngx-spinner>

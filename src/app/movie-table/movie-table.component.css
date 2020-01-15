@@ -1,0 +1,34 @@
+table, th, td {
+    border-collapse: collapse;
+    font-size: 18px;
+    margin: 0px auto 40px auto;
+    border: 1px solid;
+}
+
+.search-block {
+    float: right;
+}
+
+table thead th, table td {
+    vertical-align: middle !important;
+    /* word-break: break-all; */
+    max-width: 300px;
+    padding: 15px 70px;
+}
+
+table thead tr {
+    background-color: #6a4d91 !important;
+    color: #fff;
+}
+
+table tbody tr td {
+    padding: 10px 30px;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: rgb(111, 86, 139);
+}
+
+table tbody tr:nth-child(odd) {
+    background-color: #fff;
+}

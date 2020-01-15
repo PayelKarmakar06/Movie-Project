@@ -8,17 +8,38 @@ import { CommonDataService } from '../services/common-data.service';
 })
 export class MovieTableComponent implements OnInit {
 
+  public movieTableData: any[] = [];
+  public currentPage = 0;
+  public searchVal = '';
+
   constructor(private commonDataService: CommonDataService) { }
 
   ngOnInit() {
-    this.getDatafromService();
+    this.commonDataService.showSpinner();
+    this.getMovieData();
   }
 
-  private getDatafromService() {
-    this.commonDataService.getService('assets/title.basics.tsv/data.tsv')
+  private getMovieData() {
+    const url = 'api/movie?page=' + this.currentPage + '&searchBy=' + this.searchVal;
+    this.commonDataService.getService(url)
       .subscribe(basicData => {
-        console.log(basicData);
+        this.movieTableData = basicData.data;
+        this.commonDataService.hideSpinner();
       });
+  }
+
+  public pageChanged(event) {
+    this.commonDataService.showSpinner();
+    let isPageCall = true;
+    if (!event) {
+      isPageCall = false;
+    } else if (this.currentPage === event - 1) {
+      isPageCall = false;
+    }
+    if (isPageCall) {
+      this.currentPage = event - 1;
+      this.getMovieData();
+    }
   }
 
 }
