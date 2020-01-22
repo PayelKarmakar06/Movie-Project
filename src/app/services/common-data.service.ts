@@ -26,8 +26,6 @@ export class CommonDataService {
   }
 
   public showSpinner() {
-    // tslint:disable-next-line:no-debugger
-    debugger;
     if (!this.spinnerRunning) {
       this.spinner.show();
       this.spinnerRunning = true;

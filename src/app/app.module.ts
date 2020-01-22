@@ -1,5 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -15,7 +16,8 @@ import { MovieTableComponent } from './movie-table/movie-table.component';
     BrowserModule,
     HttpClientModule,
     NgxPaginationModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

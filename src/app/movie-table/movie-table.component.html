@@ -1,17 +1,27 @@
 <div style="text-align:center">
-    <h2>The all time favourite Movies</h2>
+    <h2>List of all time Favourite Movies</h2>
 </div>
 
 <div>
-    <div class="row search-block">
-        <div class="col-md-4 col-sm-4 col-xl-4">
-            <input type="text" placeholder="Search.." name="search" class="form-control" type="text"
-                (search)="getItems(searchedText, false)" (change)="onChangeSearch(searchedText, false)">
+    <div class="row">
+        <div class="col-md-1 col-sm-1 col-xl-1"></div>
+        <div class="col-md-5 col-sm-5 col-xl-5">
+            <span><label>Sort by: </label></span>
+            <select class="select-control" (change)="sortMovies(selectedField)" [(ngModel)]="selectedField">
+                <option disabled>Select</option>
+                <option *ngFor="let column of sortByColumns" [value]="column.value">{{column.name}}</option>
+            </select>
         </div>
-        <div class="col-md-3 col-sm-3 col-xl-2">
-            <button type="button" class="btn" (click)="getItems(searchedText, false)" class="btn-search"
-                [disabled]="!searchedText || searchedText.length <3">Search</button>
+        <div class="col-md-2 col-sm-2 col-xl-2"></div>
+        <div class="col-md-2 col-sm-2 col-xl-2">
+            <input type="text" placeholder="Search.." name="search" class="form-control search-box" type="text" [(ngModel)]="searchVal"
+                (change)="searchMovies(searchVal)">
         </div>
+        <div class="col-md-1 col-sm-1 col-xl-1">
+            <button type="button" (click)="searchMovies(searchVal)" class="btn-search btn"
+                [disabled]="!searchVal || searchVal.length <3">Search</button>
+        </div>
+        <div class="col-md-1 col-sm-1 col-xl-1"></div>
     </div>
     <div class="row"></div>
     <table>
@@ -22,16 +32,15 @@
                 <th>Year</th>
                 <th>Rating</th>
                 <th>Runtime</th>
-                <th>Go to IMDB</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let movie of movieTableData | paginate: {itemsPerPage: 10, currentPage: curPage,totalItems: 500}">
+            <tr *ngFor="let movie of movieTableData | paginate: {itemsPerPage: 10, currentPage: curPage,totalItems: filteredItemLength}">
                 <td>{{movie.primaryTitle}}</td>
                 <td>{{movie.genres}}</td>
                 <td>{{movie.startYear}}</td>
                 <td>{{movie.averageRating}}</td>
-                <td>{{movie.runtimeMinutes}}</td>
+                <td>{{movie.runtimeMinutes === '\\N' ? 'NA' : movie.runtimeMinutes}}</td>
             </tr>
         </tbody>
     </table>
@@ -42,4 +51,9 @@
         </div>
     </div>
 </div>
-<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="pacman"></ngx-spinner>
+<ngx-spinner 
+    bdColor="rgba(51,51,51,0.8)" 
+    size="medium" 
+    color="#fff" 
+    type="pacman">
+</ngx-spinner>

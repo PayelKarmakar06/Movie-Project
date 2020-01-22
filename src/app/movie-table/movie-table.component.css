@@ -5,8 +5,27 @@ table, th, td {
     border: 1px solid;
 }
 
-.search-block {
-    float: right;
+.select-control {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    height: 32px;
+    width: 20%;
+    margin-left: 6px;
+}
+
+.btn {
+    cursor: pointer;
+    width: 120%;
+    background-color: #856aa8 !important;
+    color: #fff;
+}
+
+.search-box {
+    border-radius: 14px;
+    padding: 10px;
+    margin-bottom: 20px;
 }
 
 table thead th, table td {
