@@ -32,20 +32,16 @@ export class MovieTableComponent implements OnInit {
     if (searchVal) {
       url = url + '&searchBy=' + searchVal;
     }
-    if (fieldName) {
+    if (fieldName && fieldName !== 'Select') {
       url = url + '&sortBy=' + fieldName;
     }
     this.commonDataService.getService(url)
       .subscribe(basicData => {
         this.movieTableData = basicData.data;
-        if (!searchVal && fieldName === 'Select') {
-          this.dataWithoutFilters = basicData.data;
-        }
         if (this.selectedField !== 'Select') {
-          this.movieTableData = this.movieTableData.sort((a, b) => a[fieldName].localeCompare(b[fieldName]));
+          this.movieTableData = this.movieTableData.sort((a, b) => a[this.selectedField].localeCompare(b[this.selectedField]));
         }
-        console.log('this.movieTableData', this.movieTableData)
-        console.log('fieldName', fieldName)
+        console.log('this.movieTableData', this.movieTableData);
         this.commonDataService.hideSpinner();
       });
   }
@@ -62,14 +58,14 @@ export class MovieTableComponent implements OnInit {
     if (searchVal && searchVal.trim()) {
       this.commonDataService.showSpinner();
       this.currentPage = 0;
-      this.getMovieData(searchVal.toLowerCase());
+      this.getMovieData(searchVal.toLowerCase(), '');
     } else {
       this.movieTableData = this.dataWithoutFilters;
     }
   }
 
   public sortMovies(fieldName: string) {
-    if (this.searchVal && this.searchVal.trim()) {
+    if (this.searchVal && c.trim()) {
         return this.movieTableData.sort((a, b) => a[fieldName].localeCompare(b[fieldName]));
     } else {
       this.commonDataService.showSpinner();
@@ -77,6 +73,13 @@ export class MovieTableComponent implements OnInit {
       this.getMovieData('', fieldName);
     }
     // return this.movieTableData.sort((a, b) => a[fieldName].localeCompare(b[fieldName]));
+  }
+
+  public searchOnChange() {
+    if(this.searchVal.length == 0) {
+      this.commonDataService.showSpinner();
+      this.getMovieData();
+    }
   }
 
 }

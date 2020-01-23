@@ -14,7 +14,8 @@
         </div>
         <div class="col-md-2 col-sm-2 col-xl-2"></div>
         <div class="col-md-2 col-sm-2 col-xl-2">
-            <input type="text" placeholder="Search.." name="search" class="form-control search-box" type="text" [(ngModel)]="searchVal">
+            <input type="text" placeholder="Search.." name="search" class="form-control search-box" type="text" [(ngModel)]="searchVal"
+            (change)="searchOnChange()">
         </div>
         <div class="col-md-1 col-sm-1 col-xl-1">
             <button type="button" (click)="searchMovies(searchVal)" class="btn-search btn"
@@ -36,7 +37,7 @@
         <tbody *ngIf="!searchVal && selectedField == 'Select'">
             <tr *ngFor="let movie of movieTableData | paginate: { id: 'def', itemsPerPage: 10, currentPage: curPage, totalItems: filteredItemLength}">
                 <td>{{movie.primaryTitle}}</td>
-                <td>{{movie.genres}}</td>
+                <td>{{movie.genres === '\\N' ? 'NA' : movie.genres}}</td>
                 <td>{{movie.startYear}}</td>
                 <td>{{movie.averageRating}}</td>
                 <td>{{movie.runtimeMinutes === '\\N' ? 'NA' : movie.runtimeMinutes}}</td>
@@ -45,7 +46,7 @@
         <tbody *ngIf="searchVal || selectedField !== 'Select'">
             <tr *ngFor="let movie of movieTableData | paginate: { id: 'sort-search', itemsPerPage: 10, currentPage: p}">
                 <td>{{movie.primaryTitle}}</td>
-                <td>{{movie.genres}}</td>
+                <td>{{movie.genres === '\\N' ? 'NA' : movie.genres}}</td>
                 <td>{{movie.startYear}}</td>
                 <td>{{movie.averageRating ? movie.averageRating : 'NA'}}</td>
                 <td>{{movie.runtimeMinutes === '\\N' ? 'NA' : movie.runtimeMinutes}}</td>
