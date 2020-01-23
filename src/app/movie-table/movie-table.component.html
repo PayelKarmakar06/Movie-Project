@@ -12,14 +12,16 @@
                 <option *ngFor="let column of sortByColumns" [value]="column.value">{{column.name}}</option>
             </select>
         </div>
-        <div class="col-md-2 col-sm-2 col-xl-2"></div>
+        <div class="col-md-1 col-sm-1 col-xl-1"></div>
         <div class="col-md-2 col-sm-2 col-xl-2">
-            <input type="text" placeholder="Search.." name="search" class="form-control search-box" type="text" [(ngModel)]="searchVal"
-            (change)="searchOnChange()">
+            <input type="text" placeholder="Search.." name="search" class="form-control search-box" type="text" [(ngModel)]="searchVal" (change)="searchOnChange()">
         </div>
         <div class="col-md-1 col-sm-1 col-xl-1">
             <button type="button" (click)="searchMovies(searchVal)" class="btn-search btn"
                 [disabled]="!searchVal">Search</button>
+        </div>
+        <div class="col-md-1 col-sm-1 col-xl-1">
+            <button type="button" (click)="resetFilter()" class="btn-search btn">Reset</button>
         </div>
         <div class="col-md-1 col-sm-1 col-xl-1"></div>
     </div>

@@ -65,14 +65,13 @@ export class MovieTableComponent implements OnInit {
   }
 
   public sortMovies(fieldName: string) {
-    if (this.searchVal && c.trim()) {
+    if (this.searchVal && this.searchVal.trim()) {
         return this.movieTableData.sort((a, b) => a[fieldName].localeCompare(b[fieldName]));
     } else {
       this.commonDataService.showSpinner();
       this.currentPage = 0;
       this.getMovieData('', fieldName);
     }
-    // return this.movieTableData.sort((a, b) => a[fieldName].localeCompare(b[fieldName]));
   }
 
   public searchOnChange() {
@@ -80,6 +79,13 @@ export class MovieTableComponent implements OnInit {
       this.commonDataService.showSpinner();
       this.getMovieData();
     }
+  }
+
+  public resetFilter() {
+    this.searchVal = '';
+    this.selectedField = 'Select';
+    this.commonDataService.showSpinner();
+    this.getMovieData();
   }
 
 }
