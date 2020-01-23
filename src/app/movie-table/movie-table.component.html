@@ -14,12 +14,11 @@
         </div>
         <div class="col-md-2 col-sm-2 col-xl-2"></div>
         <div class="col-md-2 col-sm-2 col-xl-2">
-            <input type="text" placeholder="Search.." name="search" class="form-control search-box" type="text" [(ngModel)]="searchVal"
-                (change)="searchMovies(searchVal)">
+            <input type="text" placeholder="Search.." name="search" class="form-control search-box" type="text" [(ngModel)]="searchVal">
         </div>
         <div class="col-md-1 col-sm-1 col-xl-1">
             <button type="button" (click)="searchMovies(searchVal)" class="btn-search btn"
-                [disabled]="!searchVal || searchVal.length <3">Search</button>
+                [disabled]="!searchVal">Search</button>
         </div>
         <div class="col-md-1 col-sm-1 col-xl-1"></div>
     </div>
@@ -34,8 +33,8 @@
                 <th>Runtime</th>
             </tr>
         </thead>
-        <tbody>
-            <tr *ngFor="let movie of movieTableData | paginate: {itemsPerPage: 10, currentPage: curPage,totalItems: filteredItemLength}">
+        <tbody *ngIf="!searchVal && selectedField == 'Select'">
+            <tr *ngFor="let movie of movieTableData | paginate: { id: 'def', itemsPerPage: 10, currentPage: curPage, totalItems: filteredItemLength}">
                 <td>{{movie.primaryTitle}}</td>
                 <td>{{movie.genres}}</td>
                 <td>{{movie.startYear}}</td>
@@ -43,11 +42,23 @@
                 <td>{{movie.runtimeMinutes === '\\N' ? 'NA' : movie.runtimeMinutes}}</td>
             </tr>
         </tbody>
+        <tbody *ngIf="searchVal || selectedField !== 'Select'">
+            <tr *ngFor="let movie of movieTableData | paginate: { id: 'sort-search', itemsPerPage: 10, currentPage: p}">
+                <td>{{movie.primaryTitle}}</td>
+                <td>{{movie.genres}}</td>
+                <td>{{movie.startYear}}</td>
+                <td>{{movie.averageRating ? movie.averageRating : 'NA'}}</td>
+                <td>{{movie.runtimeMinutes === '\\N' ? 'NA' : movie.runtimeMinutes}}</td>
+            </tr>
+        </tbody>
     </table>
 
     <div class="row" *ngIf="movieTableData && movieTableData.length > 0">
-        <div class="col">
-            <pagination-controls previousLabel="Prev" nextLabel="Next" (click)="pageChanged(curPage)" (pageChange)="curPage = $event"></pagination-controls>
+        <div class="col" *ngIf="!searchVal && selectedField === 'Select'">
+            <pagination-controls id="def" previousLabel="Prev" nextLabel="Next" (click)="pageChanged(curPage)" (pageChange)="curPage = $event"></pagination-controls>
+        </div>
+        <div class="col" *ngIf="searchVal || selectedField !== 'Select'">
+            <pagination-controls id="sort-search" previousLabel="Prev" nextLabel="Next" (pageChange)="p = $event"></pagination-controls>
         </div>
     </div>
 </div>

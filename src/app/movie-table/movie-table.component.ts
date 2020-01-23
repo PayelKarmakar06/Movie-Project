@@ -11,8 +11,10 @@ export class MovieTableComponent implements OnInit {
   public movieTableData: any[] = [];
   public currentPage = 0;
   public searchVal = '';
-  public filteredItemLength = 500;
+  public filteredItemLength = 744;
   public sortByColumns = [];
+  public selectedField = 'Select';
+  public dataWithoutFilters = [];
 
   constructor(private commonDataService: CommonDataService) { }
 
@@ -36,43 +38,45 @@ export class MovieTableComponent implements OnInit {
     this.commonDataService.getService(url)
       .subscribe(basicData => {
         this.movieTableData = basicData.data;
-        if (searchVal || searchVal !== 'undefined' || fieldName || fieldName !== 'undefined') {
-          this.filteredItemLength = basicData.data.length;
+        if (!searchVal && fieldName === 'Select') {
+          this.dataWithoutFilters = basicData.data;
         }
+        if (this.selectedField !== 'Select') {
+          this.movieTableData = this.movieTableData.sort((a, b) => a[fieldName].localeCompare(b[fieldName]));
+        }
+        console.log('this.movieTableData', this.movieTableData)
+        console.log('fieldName', fieldName)
         this.commonDataService.hideSpinner();
       });
   }
 
-  public pageChanged(event) {
+  public pageChanged(pageCounter) {
     this.commonDataService.showSpinner();
-    let isPageCall = true;
-    if (!event) {
-      isPageCall = false;
-    } else if (this.currentPage === event - 1) {
-      isPageCall = false;
-    }
-    if (isPageCall) {
-      this.currentPage = event - 1;
+    if (pageCounter && this.currentPage !== pageCounter - 1) {
+      this.currentPage = pageCounter - 1;
       this.getMovieData();
     }
   }
 
   public searchMovies(searchVal: string) {
-    if (searchVal.length > 2) {
+    if (searchVal && searchVal.trim()) {
       this.commonDataService.showSpinner();
       this.currentPage = 0;
       this.getMovieData(searchVal.toLowerCase());
+    } else {
+      this.movieTableData = this.dataWithoutFilters;
     }
   }
 
   public sortMovies(fieldName: string) {
-    if (this.searchVal && this.searchVal.length > 2) {
+    if (this.searchVal && this.searchVal.trim()) {
         return this.movieTableData.sort((a, b) => a[fieldName].localeCompare(b[fieldName]));
     } else {
       this.commonDataService.showSpinner();
       this.currentPage = 0;
       this.getMovieData('', fieldName);
     }
+    // return this.movieTableData.sort((a, b) => a[fieldName].localeCompare(b[fieldName]));
   }
 
 }
